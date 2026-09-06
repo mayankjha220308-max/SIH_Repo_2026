@@ -36,6 +36,12 @@ def login(data: schemas.UserLogin, response: Response, db: Session = Depends(get
 
     return {"access_token": token, "token_type": "bearer"}
 
+@router.post("/logout")
+def logout(response: Response):
+    # Clear the cookie
+    response.delete_cookie("access_token")
+    return {"detail": "logged out"}
+
 @router.get("/me", response_model=schemas.UserOut)
 def me(request: Request, db: Session = Depends(get_db)):
     # Try Authorization header first
